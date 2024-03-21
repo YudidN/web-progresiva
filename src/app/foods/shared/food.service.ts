@@ -68,4 +68,32 @@ export class FoodService {
   public getAllFoods():Food[]{
     return this.menu;
   }
+ // Obtener una comida del arreglo
+  public getOne(id:number): Food | undefined {
+    return this.menu.find(item=>item.id== id);
+  }
+
+  //Añadir nueva comida
+  public addFood(food:Food){
+    this.menu.push(food);
+  }
+
+  //Actualizar nueva comida
+  public updateFood(newFood:Food){
+    this.menu.forEach((food,index)=>{
+      if(food.id == newFood.id){
+        this.menu[index] = newFood;
+      }
+    })
+  }
+
+  //Eliminar comida
+  public deleteFood(deleteFood:Food){
+    this.menu.forEach((food,index)=>{
+      if(food.id == deleteFood.id){
+        this.menu.splice(index,1);
+      }
+    })
+  }
+  
 }
