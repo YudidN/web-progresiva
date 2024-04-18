@@ -46,20 +46,29 @@ export class FormFoodComponent  implements OnInit{
       this.edit = true;
       this.foodId =Number(this.activedRoute.snapshot.params['id']);
       console.log(this.foodId);
-      this.food = this.serviceFood.getOne(this.foodId);
-      if(this.food){
-        this.form.patchValue({
-          name:this.food.name,
-          category:this.food.category,
-          description:this.food.descripcion,
-          image:this.food.image,
-          price:this.food.price.toString()
-        })
+      //this.food = this.serviceFood.getOne(this.foodId);
 
-      }
+      this.serviceFood.getOneFood(this.foodId).subscribe({
+        next:(value) => this.updateForm(value),
+        error:(e) => console.error(e),
+        complete:() => console.info('complete'),
+      })
 
     }
 
+  }
+
+  public updateForm(food:Food):void{
+    if(food){
+      this.form.patchValue({
+        name:food.name,
+        category:food.category,
+        description:food.descripcion,
+        image:food.image,
+        price:food.price.toString()
+      })
+
+    }
   }
 
   public updateData(){
@@ -78,8 +87,12 @@ export class FormFoodComponent  implements OnInit{
       }
       
       console.log(comida);
-      this.serviceFood.updateFood(comida);
-      this.router.navigate(['/food/food-list']);
+      //this.serviceFood.updateFood(comida);
+      this.serviceFood.addFood(comida).subscribe({
+        next:(value) => (this.food = value),
+        error:(e) => console.error(e),
+        complete:() => this.router.navigate(['/food/food-list']),
+      })
       }
     }
   }
@@ -98,8 +111,12 @@ export class FormFoodComponent  implements OnInit{
       }
       
       console.log(comida);
-      this.serviceFood.addFood(comida);
-      this.router.navigate(['/food/food-list']);
+      //this.serviceFood.addFood(comida);
+      this.serviceFood.addFood(comida).subscribe({
+        next:(value) => (this.food = value),
+        error:(e) => console.error(e),
+        complete:() =>this.router.navigate(['/food/food-list']),
+      })
       }
     }
  }

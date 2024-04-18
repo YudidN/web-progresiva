@@ -12,12 +12,18 @@ import { FoodComponent } from '../food/food.component';
 })
 export class FoodListComponent implements OnInit{
   data:Food[]=[];
-  constructor(public serviceFood:FoodService){
 
+  constructor(public serviceFood:FoodService){
   }
+
   ngOnInit(): void {
-    this.data = this.serviceFood.getAllFoods();
-    
+    this.serviceFood.getAll().subscribe({
+      next:(value) => (this.data = value),
+      error:(e) => console.error(e),
+      complete:() => console.info('complete'),
+    });
+    //this.data = this.serviceFood.getAllFoods();
+    console.log(this.data); 
   }
 
 }
